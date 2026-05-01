@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Valkor Brief System</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#0b1220,#111c33);
+  padding:20px;
+  color:white;
+}
+
+.card{
+  width:100%;
+  max-width:900px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:18px;
+  padding:28px;
+  backdrop-filter:blur(12px);
+}
+
+.header{display:flex;justify-content:space-between;align-items:center;}
+
+h1{font-size:24px;}
+
+p{
+  text-align:center;
+  opacity:0.7;
+  margin:10px 0 20px;
+  font-size:13px;
+}
+
+#themeToggle{
+  background:#334155;
+  color:white;
+  border:none;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+#errorMsg{
+  text-align:center;
+  color:#ff4d4d;
+  font-size:13px;
+  margin-bottom:10px;
+  min-height:18px;
+}
+
+.step{display:none;}
+.step.active{display:block;}
+
+.step-title{
+  font-size:14px;
+  font-weight:700;
+  margin-bottom:10px;
+  opacity:0.9;
+  border-left:3px solid #22c55e;
+  padding-left:10px;
+}
+
+label{
+  display:block;
+  margin-top:10px;
+  font-size:13px;
+  opacity:0.85;
+}
+
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  margin-top:6px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.15);
+  background:rgba(255,255,255,0.06);
+  color:white;
+}
+
+textarea{min-height:90px;}
+
+.btns{
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+}
+
+button{
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.prev{background:#334155;color:white;}
+.next{background:#22c55e;color:white;flex:1;}
+.whatsapp{background:#25D366;color:white;width:100%;margin-top:15px;}
+
+button:disabled{
+  opacity:0.5;
+  cursor:not-allowed;
+}
+
+.progress{
+  height:6px;
+  background:rgba(255,255,255,0.1);
+  border-radius:10px;
+  margin-bottom:20px;
+  overflow:hidden;
+}
+
+.bar{
+  height:100%;
+  width:0%;
+  background:#22c55e;
+  transition:0.25s ease;
+}
+
+.light{
+  background:linear-gradient(135deg,#f8fafc,#e2e8f0);
+  color:#0f172a;
+}
+
+.light .card{
+  background:white;
+  border:1px solid rgba(0,0,0,0.08);
+}
+
+.light input,
+.light select,
+.light textarea{
+  background:#f1f5f9;
+  color:#0f172a;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<div class="header">
+  <h1>Valkor Brief System</h1>
+  <button id="themeToggle">☀️</button>
+</div>
+
+<p>Initialisation & analyse du projet</p>
+
+<div id="errorMsg"></div>
+
+<div class="progress">
+  <div class="bar" id="bar"></div>
+</div>
+
+<form id="form">
+
+<!-- STEP 1 -->
+<div class="step active" id="step1">
+<div class="step-title">1. Identité du client</div>
+
+<label>Nom complet</label>
+<input id="nom">
+
+<label>Email</label>
+<input id="email">
+
+<label>WhatsApp</label>
+<input id="phone">
+
+<label>Nom du projet</label>
+<input id="projectName">
+</div>
+
+<!-- STEP 2 -->
+<div class="step" id="step2">
+<div class="step-title">2. Définition du projet</div>
+
+<label>Type de projet</label>
+<select id="type">
+  <option value="">-- Choisir --</option>
+  <option>Site vitrine</option>
+  <option>Site e-commerce</option>
+  <option>Application mobile</option>
+  <option>Application web</option>
+  <option>Dashboard / SaaS</option>
+  <option>Design / Branding</option>
+  <option>Automatisation</option>
+</select>
+
+<label>Problème à résoudre</label>
+<textarea id="problem"></textarea>
+
+<label>Objectif</label>
+<select id="objective">
+  <option value="">-- Choisir --</option>
+  <option>Vendre des produits/services</option>
+  <option>Présenter une activité</option>
+  <option>Automatiser un processus</option>
+  <option>Générer des leads</option>
+  <option>Améliorer la visibilité</option>
+</select>
+</div>
+
+<!-- STEP 3 -->
+<div class="step" id="step3">
+<div class="step-title">3. Contexte du projet</div>
+
+<label>Public cible</label>
+<select id="audience">
+  <option value="">-- Choisir --</option>
+  <option>Particuliers</option>
+  <option>Entreprises</option>
+  <option>Jeunes</option>
+  <option>Commerçants</option>
+  <option>Institutions</option>
+</select>
+
+<label>Plateforme</label>
+<select id="platform">
+  <option value="">-- Choisir --</option>
+  <option>Web</option>
+  <option>Mobile Android</option>
+  <option>Mobile iOS</option>
+  <option>Web + Mobile</option>
+</select>
+
+<label>Budget</label>
+<select id="budget">
+  <option value="">-- Choisir --</option>
+  <option>50k - 100k</option>
+  <option>100k - 300k</option>
+  <option>300k - 700k</option>
+  <option>700k+</option>
+</select>
+
+<label>Date limite de soumission</label>
+<input id="deadline">
+
+<label>Contenu disponible</label>
+<select id="content">
+  <option value="">-- Choisir --</option>
+  <option>Oui, prêt</option>
+  <option>Partiellement</option>
+  <option>Non</option>
+</select>
+</div>
+
+<!-- STEP 4 -->
+<div class="step" id="step4">
+<div class="step-title">4. Finalisation</div>
+
+<label>Description détaillée</label>
+<textarea id="desc"></textarea>
+</div>
+
+<div class="btns">
+  <button type="button" class="prev" onclick="prev()">Retour</button>
+  <button type="button" class="next" onclick="next()">Suivant</button>
+</div>
+
+<button class="whatsapp" type="submit" id="sendBtn" disabled>
+📩 Envoyer sur WhatsApp
+</button>
+
+</form>
+</div>
+
+<script>
+
+let step = 1;
+
+const bar = document.getElementById("bar");
+const sendBtn = document.getElementById("sendBtn");
+const errorMsg = document.getElementById("errorMsg");
+
+const themeBtn = document.getElementById("themeToggle");
+
+function setTheme(isLight){
+  document.body.classList.toggle("light", isLight);
+  themeBtn.textContent = isLight ? "🌙" : "☀️";
+}
+
+themeBtn.addEventListener("click", ()=>{
+  setTheme(!document.body.classList.contains("light"));
+});
+
+/* HELPERS */
+function val(id){
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : "";
+}
+
+/* VALIDATION (inchangée) */
+function validateStep1(){
+  if(!val("nom") || !/^[a-zA-ZÀ-ÿ\s]+$/.test(val("nom"))) return error("Nom invalide");
+  if(!val("email") || !val("email").includes("@")) return error("Email invalide");
+  if(!val("phone") || !/^[0-9+]{8,15}$/.test(val("phone"))) return error("WhatsApp invalide");
+  if(val("projectName").length < 3) return error("Projet trop court");
+  return ok();
+}
+
+function validateStep2(){
+  if(!val("type") || !val("problem") || !val("objective")) return error("Complète le projet");
+  return ok();
+}
+
+function validateStep3(){
+  if(!val("audience") || !val("platform") || !val("budget") || !val("deadline") || !val("content")) return error("Contexte incomplet");
+  return ok();
+}
+
+function validateStep4(){
+  if(val("desc").length < 20) return error("Description trop courte");
+  return ok();
+}
+
+function error(msg){
+  errorMsg.textContent = msg;
+  return false;
+}
+
+function ok(){
+  errorMsg.textContent = "";
+  return true;
+}
+
+/* PROGRESS */
+function updateBar(){
+
+  const fields = [
+    "nom","email","phone","projectName",
+    "type","problem","objective",
+    "audience","platform","budget","deadline","content",
+    "desc"
+  ];
+
+  let valid = 0;
+
+  fields.forEach(id=>{
+    if(val(id) !== "") valid++;
+  });
+
+  const progress = (valid / fields.length) * 100;
+  bar.style.width = progress + "%";
+
+  sendBtn.disabled = progress < 100;
+}
+
+/* STEPS */
+function showStep(n){
+  document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
+  document.getElementById("step"+n).classList.add("active");
+  updateBar();
+}
+
+function next(){
+  if(step === 1 && !validateStep1()) return;
+  if(step === 2 && !validateStep2()) return;
+  if(step === 3 && !validateStep3()) return;
+
+  if(step < 4){
+    step++;
+    showStep(step);
+  }
+}
+
+function prev(){
+  if(step > 1){
+    step--;
+    showStep(step);
+  }
+}
+
+/* LIVE */
+document.querySelectorAll("input, select, textarea")
+.forEach(el=>{
+  el.addEventListener("input", updateBar);
+  el.addEventListener("change", updateBar);
+});
+
+showStep(1);
+updateBar();
+
+/* SEND */
+document.getElementById("form").addEventListener("submit", e=>{
+  e.preventDefault();
+
+  if(!validateStep4()) return;
+
+  const msg = `*Valkor Brief System*
+
+Nom: ${val("nom")}
+Email: ${val("email")}
+WhatsApp: ${val("phone")}
+Projet: ${val("projectName")}
+Type: ${val("type")}
+Problème: ${val("problem")}
+Objectif: ${val("objective")}
+Public: ${val("audience")}
+Plateforme: ${val("platform")}
+Budget: ${val("budget")}
+Deadline: ${val("deadline")}
+Contenu: ${val("content")}
+
+Description:
+${val("desc")}`;
+
+  window.open(
+    "https://wa.me/2290192262513?text=" + encodeURIComponent(msg),
+    "_blank"
+  );
+});
+
+</script>
+
+</body>
+</html>
